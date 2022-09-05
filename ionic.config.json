@@ -1,0 +1,7 @@
+{
+  "name": "ionicspot",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
