@@ -1,17 +1,99 @@
-<ion-header [translucent]="true">
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="dark">
+        <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <div class="collection">
+    <div class="collection-title">
+      Buenos Dias
+    </div>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+    <div class="scroll-horizontal">
+      <div class="scroll-item" *ngFor="let i of [0,1,2]">
+        <div class="media-card" routerLink="playlist">
+          <ion-row class="grid-no-padding ion-align-items-center">
+            <ion-col size="auto">
+              <ion-thumbnail>
+                <img src="{{'assets/img/img_' + (i%5 + 1) + '.png'}}" alt="">
+              </ion-thumbnail>
+            </ion-col>
+
+            <ion-col class="ion-padding-start">
+              <strong>cancion {{i + 1}} </strong>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="collection">
+    <div class="collection-title">
+      Escuchado recientemente
+    </div>
+
+    <div class="scroll-horizontal">
+      <div class="scroll-item size-sm" routerLink="playlist" *ngFor="let i of [0,1,2,3,4,5,6]">
+        <div class="card-thumbnail size-sm" [style.backgroundImage]="'url(assets/img/img_' + (i%5 + 1) + '.png)'"></div>
+        <div class="item-title">
+          <ion-icon name="shuffle-outline"></ion-icon>
+          Miel SM {{i + 1}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="collection">
+    <div class="collection-title">
+      Artistas que te gustan
+    </div>
+
+    <div class="scroll-horizontal">
+      <div class="scroll-item size-md" routerLink="playlist" *ngFor="let i of [0,1,2,3,4,5,6]">
+        <div class="card-thumbnail size-md" [style.backgroundImage]="'url(assets/img/img_' + (i%5 + 1) + '.png)'"></div>
+        <div class="item-title">
+          <ion-icon name="shuffle-outline"></ion-icon>
+          Jesus Adrian {{i + 1}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="collection">
+    <div class="collection-title">
+      Recomendada para hoy
+    </div>
+
+    <div class="scroll-horizontal">
+      <div class="scroll-item size-md" routerLink="playlist" *ngFor="let i of [0,1,2,3,4,5,6]">
+        <div class="card-thumbnail size-md" [style.backgroundImage]="'url(assets/img/img_' + (i%5 + 1) + '.png)'"></div>
+        <div class="item-title">
+          <ion-icon name="shuffle-outline"></ion-icon>
+          Libertad {{i + 1}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="collection">
+    <div class="collection-title">
+      Emisoras recomendadas
+    </div>
+ 
+    <div class="scroll-horizontal">
+      <div class="scroll-item size-md" *ngFor="let i of [0,1,2,3,4,5,6]">
+        <div class="card-thumbnail size-md" [style.backgroundImage]="'url(assets/img/img_' + (i%5 + 1) + '.png)'"></div>
+        <div class="item-title">
+          <ion-icon name="shuffle-outline"></ion-icon>
+          Emisora {{i + 1}}
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>

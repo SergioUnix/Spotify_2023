@@ -1,17 +1,65 @@
-<ion-header [translucent]="true">
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
+    <ion-title size="large">Buscar</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar placeholder="Artista, cancion o album"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-item lines="none">
+    <ion-label><strong>Buscar Toda la Musica</strong></ion-label>
+  </ion-item>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <div class="category-list">
+    <div class="category-item">
+      <div class="title">
+        Musica del Cielo
+      </div>
+      <div class="card-thumbnail" [style.backgroundImage]="'url(assets/img/img_1.png)'"></div>
+    </div>
+    <div class="category-item color-2">
+      <div class="title">
+        Pentecostes
+      </div>
+      <div class="card-thumbnail" [style.backgroundImage]="'url(assets/img/img_2.png)'"></div>
+    </div>
+    <div class="category-item color-3">
+      <div class="title">
+        Proezas
+      </div>
+      <div class="card-thumbnail" [style.backgroundImage]="'url(assets/img/img_3.png)'"></div>
+    </div>
+    <div class="category-item color-4">
+      <div class="title">
+        Varia Musica
+      </div>
+      <div class="card-thumbnail" [style.backgroundImage]="'url(assets/img/img_4.png)'"></div>
+    </div>
+    <div class="category-item">
+      <div class="title">
+        Grande y Fuerte
+      </div>
+      <div class="card-thumbnail" [style.backgroundImage]="'url(assets/img/img_1.png)'"></div>
+    </div>
+    <div class="category-item color-2">
+      <div class="title">
+        Bautizame
+      </div>
+      <div class="card-thumbnail" [style.backgroundImage]="'url(assets/img/img_2.png)'"></div>
+    </div>
+    <div class="category-item color-3">
+      <div class="title">
+        Los Muros Caeran
+      </div>
+      <div class="card-thumbnail" [style.backgroundImage]="'url(assets/img/img_3.png)'"></div>
+    </div>
+    <div class="category-item color-4">
+      <div class="title">
+        Mix Cristianos
+      </div>
+      <div class="card-thumbnail" [style.backgroundImage]="'url(assets/img/img_4.png)'"></div>
+    </div>
+  </div>
 </ion-content>

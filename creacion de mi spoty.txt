@@ -1,0 +1,58 @@
+-- inicio app en ionic
+ionic start nombredelProyecto tabs
+
+--iniciar
+ionic serve
+
+
+--instalar Capacitor
+npm i @capacitor/core
+npm i -D @capacitor/cli
+
+
+-Instalar capacitor soporte
+--instalar para Android y iOS 
+npm i @capacitor/android @capacitor/ios
+
+
+
+------- inicio de compilacion para android ---------
+
+--compilar el proyecto
+ionic build 
+
+--agregar en el  package.json
+npx cap add android
+npx cap add ios
+
+
+--sincronizar tu proyecto
+npx cap sync 
+
+--antes de abrirlo con android verificar la version de gradle
+-- en la carpeta generada android/gradle/wrapper/gradle-wrapper.properties
+-- distributionUrl=https\://services.gradle.org/distributions/gradle-7.5.1-all.zip
+
+
+
+
+
+--Abrir el proyecto Android en Android studio
+npx cap open android
+
+-------- fin del proceso de compilacion   -----------
+
+-- En Android studio ir a Build
+-- ir a Build Bundle/APK
+
+
+
+
+
+
+
+
+-----------------------Genero paginas en ionic ------------------
+$ ionic g page tab4
+
+
