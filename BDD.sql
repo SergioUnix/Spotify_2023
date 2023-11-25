@@ -1,6 +1,7 @@
 -- Crear base de datos
 CREATE DATABASE SpotifyMusic;
 
+
 -- Usar la base de datos
 USE SpotifyMusic;
 
@@ -14,6 +15,7 @@ CREATE TABLE Artistas (
 CREATE TABLE Albumes (
     AlbumID INT PRIMARY KEY IDENTITY(1,1),
     TituloAlbum VARCHAR(100) NOT NULL,
+    RutaImagen VARCHAR(255) NOT NULL,
     ArtistaID INT,
     FOREIGN KEY (ArtistaID) REFERENCES Artistas(ArtistaID)
 );
@@ -55,6 +57,13 @@ CREATE TABLE ListaCanciones (
     FOREIGN KEY (CancionID) REFERENCES Canciones(CancionID)
 );
 
+-- Tabla de roles
+CREATE TABLE Roles (
+    RolID INT PRIMARY KEY IDENTITY(1,1),
+    NombreRol VARCHAR(50) NOT NULL
+);
+
+
 -- Tabla de usuarios
 CREATE TABLE Usuarios (
     UsuarioID INT PRIMARY KEY IDENTITY(1,1),
@@ -71,11 +80,6 @@ CREATE TABLE Usuarios (
     FOREIGN KEY (RolID) REFERENCES Roles(RolID)
 );
 
--- Tabla de roles
-CREATE TABLE Roles (
-    RolID INT PRIMARY KEY IDENTITY(1,1),
-    NombreRol VARCHAR(50) NOT NULL
-);
 
 -- Tabla de membresía de usuario
 CREATE TABLE MembresiaUsuario (
@@ -133,10 +137,10 @@ DROP TABLE IF EXISTS MembresiaUsuario;
 INSERT INTO Artistas (NombreArtista) VALUES ('Artista1'), ('Artista2'), ('Artista3');
 
 -- Insertar álbumes
-INSERT INTO Albumes (TituloAlbum, ArtistaID) VALUES
-  ('Album1', 1),
-  ('Album2', 2),
-  ('Album3', 3);
+INSERT INTO Albumes (TituloAlbum, ArtistaID,RutaImagen) VALUES
+  ('Album1', 1,'/imagen/imagen.jpg'),
+  ('Album2', 2,'/imagen/imagen.jpg'),
+  ('Album3', 3,'/imagen/imagen.jpg');
 
 -- Insertar canciones
 INSERT INTO Canciones (TituloCancion, AlbumID, ArtistaID, RutaArchivo, Duracion) VALUES
@@ -162,7 +166,9 @@ INSERT INTO ListaCanciones (ListaID, CancionID, Orden) VALUES
   (3, 4, 1);
 
 -- Insertar roles
-INSERT INTO Roles (NombreRol) VALUES ('Administrador', 'Invitado', 'Premium');
+INSERT INTO Roles (NombreRol) VALUES ('Administrador');
+INSERT INTO Roles (NombreRol) VALUES ('Invitado');
+INSERT INTO Roles (NombreRol) VALUES ('Premium');
 
 -- Insertar usuarios
 INSERT INTO Usuarios (Nombre, Apellidos, Alias, Pais, Departamento, FechaNacimiento, Instrumento, Password, Correo, RolID) VALUES
