@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { NowPlayingPage } from '../now-playing/now-playing.page';
 import { Router } from '@angular/router';
-
+import { MusicPlayerService } from '../music-player.service';
 
 @Component({
   selector: 'app-tabs',
@@ -11,7 +11,9 @@ import { Router } from '@angular/router';
 })
 export class TabsPage {
 
-  constructor(public modalCtrl: ModalController,private router: Router) {}
+  constructor(public modalCtrl: ModalController,
+    private router: Router,
+    private musicPlayerService: MusicPlayerService) {}
 
  // async openNowPlaying() {
    // const modal = await this.modalCtrl.create({
@@ -24,7 +26,22 @@ export class TabsPage {
   this.router.navigate(['/now-playing']); 
 
  }
+ play(){
+  this.musicPlayerService.play();
+}
 
-
+pause(){
+  this.musicPlayerService.pause();
+}
+ 
 
 }
+
+
+
+
+
+
+
+
+
