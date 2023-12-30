@@ -24,6 +24,10 @@ const routes: Routes = [
         loadChildren: () => import('../tab4/tab4.module').then(m => m.Tab4PageModule)
       },
       {
+        path: 'album/:id',
+        loadChildren: () => import('../album-songs/album-songs.module').then(m => m.AlbumSongsPageModule)
+      },
+           {
         path: '',
         redirectTo: '/tabs/tab1',
         pathMatch: 'full'
@@ -41,3 +45,6 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
 })
 export class TabsPageRoutingModule {}
+
+
+

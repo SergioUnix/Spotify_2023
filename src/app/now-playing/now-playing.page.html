@@ -1,9 +1,9 @@
 <ion-header class="ion-no-border">
   <ion-toolbar color="light">
     <ion-buttons slot="start">
-      <ion-button color="medium" (click)="closeModal()">
+      <ion-back-button defaultHref="/">
         <ion-icon slot="icon-only" name="chevron-down"></ion-icon>
-      </ion-button>
+      </ion-back-button>
     </ion-buttons>
 
     <ion-title>En reproduccion</ion-title>
@@ -16,59 +16,91 @@
   </ion-toolbar>
 </ion-header>
 
+
+
 <ion-content class="bg-gradient">
   <div class="album-cover">
     <ion-thumbnail>
-      <img src="{{'assets/img/img_2.png'}}" alt="">
+      <img src="{{ imagenAlbum }}" alt="">
     </ion-thumbnail>
   </div>
 
   <div class="song-info ion-padding">
     <div class="song-title">
-      Pentecostes
+      {{tituloCancion}}
     </div>
     <div class="artist-name">
-      <ion-text color="medium">Musica del cielo</ion-text>
+      <ion-text color="medium">{{ album }} </ion-text>
     </div>
   </div>
 
   <div class="song-timeline ion-padding">
-    <ion-progress-bar value="0.25"></ion-progress-bar>
+    <div *ngIf="duracionTotal">
+      <ion-progress-bar [value]="tiempoActual / duracionTotal"></ion-progress-bar>
+    </div>
     <ion-row class="grid-no-padding ion-justify-content-between">
       <ion-col size="auto">
-        0:53
+        {{ obtenerTiempoActualFormateado() }}
       </ion-col>
       <ion-col size="auto">
-        -4:18
+        -{{ obtenerTiempoRestanteFormateado() }}
       </ion-col>
     </ion-row>
   </div>
+  
+
+
+
+
+
+
+
 
   <div class="buttons ion-padding">
     <ion-button color="dark" fill="clear" size="small">
       <ion-icon slot="icon-only" name="heart-outline"></ion-icon>
     </ion-button>
-    <ion-button color="dark" fill="clear" size="small">
-      <ion-icon slot="icon-only" name="play-skip-back-sharp"></ion-icon>
+    <!-- Botón Atras -->
+    <ion-button color="dark" fill="clear" size="small" (click)="anterior()">
+      <ion-icon slot="icon-only" name="play-skip-back-sharp" ></ion-icon>
     </ion-button>
 
-    <div *ngIf="true">
-    <ion-fab-button color="dark" >
-      <ion-icon name="play-sharp" (click)="play()" ></ion-icon>
-    </ion-fab-button>
+    <div>
+        <!-- Botón de reproducción -->
+        <ion-fab-button color="dark" *ngIf="!isPlay" (click)="play()">
+          <ion-icon name="play-sharp"></ion-icon>
+        </ion-fab-button>
+      
     </div>
-    <div *ngIf="true">
-    <ion-fab-button color="dark" >
-      <ion-icon name="pause-sharp" (click)="pause()" ></ion-icon>
-    </ion-fab-button>
+    <div>
+      
+          <!-- Botón de pausa -->
+          <ion-fab-button color="dark" *ngIf="isPlay" (click)="pause()">
+            <ion-icon name="pause-sharp"></ion-icon>
+          </ion-fab-button>
+    
     </div>
-
-    <ion-button color="dark" fill="clear" size="small">
-      <ion-icon slot="icon-only" name="play-skip-forward-sharp"></ion-icon>
+     <!-- Botón adelante -->
+    <ion-button color="dark" fill="clear" size="small" (click)="siguiente()">
+      <ion-icon slot="icon-only" name="play-skip-forward-sharp" ></ion-icon>
     </ion-button>
-    <ion-button color="dark" fill="clear" size="small">
+
+    
+
+     <!-- Botón repetir toda la lista-->
+     <ion-button color="dark" fill="clear" size="small" *ngIf="reproducirTodaLista" (click)="cambiarVariables(1)">
+      <ion-icon slot="icon-only" name="sync-circle-outline"></ion-icon>
+    </ion-button>
+    <!-- Botón repetir esta cancion siempre -->
+    <ion-button color="dark" fill="clear" size="small" *ngIf="reproducirSoloUnaVez" (click)="cambiarVariables(2)">
+      <ion-icon slot="icon-only" name="sync-outline"></ion-icon>
+    </ion-button>
+     <!-- Botón repetir de manera aleatoria-->
+     <ion-button color="dark" fill="clear" size="small" *ngIf="aleatorio" (click)="cambiarVariables(3)">
       <ion-icon slot="icon-only" name="repeat-outline"></ion-icon>
     </ion-button>
+
+ 
   </div>
 
 

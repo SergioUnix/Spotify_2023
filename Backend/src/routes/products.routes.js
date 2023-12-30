@@ -1,6 +1,11 @@
 import { Router } from "express";
 import {
   getProducts,
+  getAlbums,
+  getOneAlbum,
+
+
+
   createNewProduct,
   getProductById,
   deleteProductById,
@@ -11,6 +16,8 @@ import {
 const router = Router();
 
 router.get("/products", getProducts);
+router.get("/all/albums", getAlbums);
+router.get("/all/albums/song/:id", getOneAlbum);
 
 router.post("/products", createNewProduct);
 

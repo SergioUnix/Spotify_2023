@@ -12,54 +12,18 @@
     <ion-label><strong>Buscar Toda la Musica</strong></ion-label>
   </ion-item>
 
+
+
+
   <div class="category-list">
-    <div class="category-item">
+    <div class="category-item" *ngFor="let element of Albums" (click)="redirectToAlbumDetail(element.AlbumID)">
       <div class="title">
-        Musica del Cielo
+        {{ element.TituloAlbum }} 
       </div>
-      <div class="card-thumbnail" [style.backgroundImage]="'url(assets/img/img_1.png)'"></div>
+      <img class="card-thumbnail" src="{{ element.RutaImagen}}" alt="Song Icon">
     </div>
-    <div class="category-item color-2">
-      <div class="title">
-        Pentecostes
-      </div>
-      <div class="card-thumbnail" [style.backgroundImage]="'url(assets/img/img_2.png)'"></div>
-    </div>
-    <div class="category-item color-3">
-      <div class="title">
-        Proezas
-      </div>
-      <div class="card-thumbnail" [style.backgroundImage]="'url(assets/img/img_3.png)'"></div>
-    </div>
-    <div class="category-item color-4">
-      <div class="title">
-        Varia Musica
-      </div>
-      <div class="card-thumbnail" [style.backgroundImage]="'url(assets/img/img_4.png)'"></div>
-    </div>
-    <div class="category-item">
-      <div class="title">
-        Grande y Fuerte
-      </div>
-      <div class="card-thumbnail" [style.backgroundImage]="'url(assets/img/img_1.png)'"></div>
-    </div>
-    <div class="category-item color-2">
-      <div class="title">
-        Bautizame
-      </div>
-      <div class="card-thumbnail" [style.backgroundImage]="'url(assets/img/img_2.png)'"></div>
-    </div>
-    <div class="category-item color-3">
-      <div class="title">
-        Los Muros Caeran
-      </div>
-      <div class="card-thumbnail" [style.backgroundImage]="'url(assets/img/img_3.png)'"></div>
-    </div>
-    <div class="category-item color-4">
-      <div class="title">
-        Mix Cristianos
-      </div>
-      <div class="card-thumbnail" [style.backgroundImage]="'url(assets/img/img_4.png)'"></div>
-    </div>
+    
+
+
   </div>
 </ion-content>

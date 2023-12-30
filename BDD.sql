@@ -15,7 +15,8 @@ CREATE TABLE Artistas (
 CREATE TABLE Albumes (
     AlbumID INT PRIMARY KEY IDENTITY(1,1),
     TituloAlbum VARCHAR(100) NOT NULL,
-    RutaImagen VARCHAR(255) NOT NULL,
+    RutaImagen VARCHAR(800) NOT NULL,
+    Año INT, -- Nuevo atributo para almacenar el año del álbum
     ArtistaID INT,
     FOREIGN KEY (ArtistaID) REFERENCES Artistas(ArtistaID)
 );
@@ -26,11 +27,19 @@ CREATE TABLE Canciones (
     TituloCancion VARCHAR(100) NOT NULL,
     AlbumID INT,
     ArtistaID INT,
-    RutaArchivo VARCHAR(255) NOT NULL,  -- Ruta del archivo físico de la canción
-    Duracion INT,  -- Duración en segundos
+    RutaArchivo VARCHAR(800) NOT NULL,
+    RutaArchivoBateria VARCHAR(800),  -- Nuevos atributos
+    RutaArchivoInstrumental VARCHAR(800),  -- Nuevos atributos
+    RutaArchivoBajo VARCHAR(800),  -- Nuevos atributos
+    RutaArchivoVoces VARCHAR(800),  -- Nuevos atributos
+    Video VARCHAR(800),  -- Nuevos atributos
+    Letra VARCHAR(800),  -- Nuevos atributos
+    Reproducciones INT DEFAULT 0,  -- Nuevo atributo para contar las reproducciones
+    Duracion INT,
     FOREIGN KEY (AlbumID) REFERENCES Albumes(AlbumID),
     FOREIGN KEY (ArtistaID) REFERENCES Artistas(ArtistaID)
 );
+
 
 -- Tabla de categorías
 CREATE TABLE Categorias (
@@ -42,7 +51,7 @@ CREATE TABLE Categorias (
 CREATE TABLE ListasReproduccion (
     ListaID INT PRIMARY KEY IDENTITY(1,1),
     NombreLista VARCHAR(100) NOT NULL,
-    Descripcion VARCHAR(255),
+    Descripcion VARCHAR(800),
     CategoriaID INT,
     FOREIGN KEY (CategoriaID) REFERENCES Categorias(CategoriaID)
 );
@@ -73,8 +82,8 @@ CREATE TABLE Usuarios (
     Pais VARCHAR(50),
     Departamento VARCHAR(50),
     FechaNacimiento DATE,
-    Instrumento VARCHAR(50),
-    Password VARCHAR(255) NOT NULL,
+    Instrumento VARCHAR(800),
+    Password VARCHAR(800) NOT NULL,
     Correo VARCHAR(100) UNIQUE NOT NULL,
     RolID INT,
     FOREIGN KEY (RolID) REFERENCES Roles(RolID)
@@ -108,18 +117,21 @@ CREATE TABLE ListasReproduccionFavoritas (
     FOREIGN KEY (ListaID) REFERENCES ListasReproduccion(ListaID)
 );
 
+-- Tabla de reproducciones de canciones por usuario
+CREATE TABLE ReproduccionesCancion (
+    ReproduccionID INT PRIMARY KEY IDENTITY(1,1),
+    UsuarioID INT,
+    CancionID INT,
+    FechaReproduccion DATETIME,
+    FOREIGN KEY (UsuarioID) REFERENCES Usuarios(UsuarioID),
+    FOREIGN KEY (CancionID) REFERENCES Canciones(CancionID)
+);
 
--- Eliminar relaciones antes de eliminar las tablas
-ALTER TABLE ListaCanciones DROP CONSTRAINT FK_ListaCanciones_ListasReproduccion;
-ALTER TABLE ListaCanciones DROP CONSTRAINT FK_ListaCanciones_Canciones;
-ALTER TABLE CancionesFavoritas DROP CONSTRAINT FK_CancionesFavoritas_Usuarios;
-ALTER TABLE CancionesFavoritas DROP CONSTRAINT FK_CancionesFavoritas_Canciones;
-ALTER TABLE ListasReproduccionFavoritas DROP CONSTRAINT FK_ListasReproduccionFavoritas_Usuarios;
-ALTER TABLE ListasReproduccionFavoritas DROP CONSTRAINT FK_ListasReproduccionFavoritas_ListasReproduccion;
-ALTER TABLE Usuarios DROP CONSTRAINT FK_Usuarios_Roles;
-ALTER TABLE MembresiaUsuario DROP CONSTRAINT FK_MembresiaUsuario_Usuarios;
+
+
 
 -- Eliminar tablas
+DROP TABLE IF EXISTS ReproduccionesCancion;
 DROP TABLE IF EXISTS ListaCanciones;
 DROP TABLE IF EXISTS ListasReproduccion;
 DROP TABLE IF EXISTS CancionesFavoritas;
@@ -133,55 +145,69 @@ DROP TABLE IF EXISTS Roles;
 DROP TABLE IF EXISTS MembresiaUsuario;
 
 
--- Insertar artistas
-INSERT INTO Artistas (NombreArtista) VALUES ('Artista1'), ('Artista2'), ('Artista3');
+-- -- Insertar canciones
+INSERT INTO Artistas (NombreArtista) VALUES ('Funky');
+
+-- Obtener el último ID insertado en la tabla Artistas
+DECLARE @UltimoArtista INT;
+SET @UltimoArtista = SCOPE_IDENTITY();
 
 -- Insertar álbumes
-INSERT INTO Albumes (TituloAlbum, ArtistaID,RutaImagen) VALUES
-  ('Album1', 1,'/imagen/imagen.jpg'),
-  ('Album2', 2,'/imagen/imagen.jpg'),
-  ('Album3', 3,'/imagen/imagen.jpg');
+INSERT INTO Albumes (TituloAlbum, ArtistaID,RutaImagen,Año) VALUES
+  ('Indestructible', @UltimoArtista,'https://spotibucket-1990.s3.us-east-2.amazonaws.com/Funky/11-Funky+-+Indestructible+(2015)/Funky-Indestructible.jpeg',2015);
 
--- Insertar canciones
+  -- Obtener el último ID insertado la tabla Albumes
+DECLARE @UltimoAlbum INT;
+SET @UltimoAlbum = SCOPE_IDENTITY();
+
+  -- Insertar canciones
 INSERT INTO Canciones (TituloCancion, AlbumID, ArtistaID, RutaArchivo, Duracion) VALUES
-  ('Cancion1', 1, 1, '/canciones/cancion1.mp3', 240),
-  ('Cancion2', 1, 1, '/canciones/cancion2.mp3', 180),
-  ('Cancion3', 2, 2, '/canciones/cancion3.mp3', 200),
-  ('Cancion4', 3, 3, '/canciones/cancion4.mp3', 220);
+  ('Es Imposible', 1,  @UltimoArtista, 'https://spotibucket-1990.s3.us-east-2.amazonaws.com/Funky/11-Funky+-+Indestructible+(2015)/01+Funky+%E2%80%94+Es+Imposible.mp3', 240),
+  ('Eres mi Bendicion', @UltimoAlbum,  @UltimoArtista, 'https://spotibucket-1990.s3.us-east-2.amazonaws.com/Funky/11-Funky+-+Indestructible+(2015)/02+Funky+%E2%80%94+Eres+Mi+Bendicion+(feat.+Alex+Zurdo).mp3', 180),
+  ('Fiel', @UltimoAlbum,  @UltimoArtista, 'https://spotibucket-1990.s3.us-east-2.amazonaws.com/Funky/11-Funky+-+Indestructible+(2015)/03+Funky+%E2%80%94+Fiel.mp3', 200),
+  ('Mi Peor Error', @UltimoAlbum,  @UltimoArtista, 'https://spotibucket-1990.s3.us-east-2.amazonaws.com/Funky/11-Funky+-+Indestructible+(2015)/04+Funky+%E2%80%94+Mi+Peor+Error+(feat.+Marcela+Gandara).mp3', 220),
+  ('Contigo', @UltimoAlbum,  @UltimoArtista, 'https://spotibucket-1990.s3.us-east-2.amazonaws.com/Funky/11-Funky+-+Indestructible+(2015)/05+Funky+%E2%80%94+Contigo.mp3', 220),
+  ('Invencible', @UltimoAlbum,  @UltimoArtista, 'https://spotibucket-1990.s3.us-east-2.amazonaws.com/Funky/11-Funky+-+Indestructible+(2015)/06+Funky+%E2%80%94+Invencible+(feat.+Ingrid+Rosario).mp3', 220),
+  ('Entre Tus Brazos', @UltimoAlbum,  @UltimoArtista, 'https://spotibucket-1990.s3.us-east-2.amazonaws.com/Funky/11-Funky+-+Indestructible+(2015)/07+Funky+%E2%80%94+Entre+Tus+Brazos+(feat.+Daniel+Calveti+%26+Any+Puello).mp3', 220),
+  ('Como No Voy a Creer', @UltimoAlbum,  @UltimoArtista, 'https://spotibucket-1990.s3.us-east-2.amazonaws.com/Funky/11-Funky+-+Indestructible+(2015)/08+Funky+%E2%80%94+Como+No+Voy+a+Creer.mp3', 220),
+  ('Se Nota En Tus Ojos', @UltimoAlbum,  @UltimoArtista, 'https://spotibucket-1990.s3.us-east-2.amazonaws.com/Funky/11-Funky+-+Indestructible+(2015)/09+Funky+%E2%80%94+Se+Nota+En+Tus+Ojos.mp3', 220),
+  ('No Te Enredes', @UltimoAlbum,  @UltimoArtista, 'https://spotibucket-1990.s3.us-east-2.amazonaws.com/Funky/11-Funky+-+Indestructible+(2015)/10+Funky+%E2%80%94+No+Te+Enredes.mp3', 220),
+  ('Cicatriz', @UltimoAlbum,  @UltimoArtista, 'https://spotibucket-1990.s3.us-east-2.amazonaws.com/Funky/11-Funky+-+Indestructible+(2015)/11+Funky+%E2%80%94+Cicatriz+(feat.+Musiko).mp3', 220),
+  ('Va a Caer La Lluvia', @UltimoAlbum,  @UltimoArtista, 'https://spotibucket-1990.s3.us-east-2.amazonaws.com/Funky/11-Funky+-+Indestructible+(2015)/12+Funky+%E2%80%94+Va+a+Caer+La+Lluvia.mp3', 220)
+  ;
 
--- Insertar categorías
-INSERT INTO Categorias (NombreCategoria) VALUES ('Pop'), ('Rock'), ('Electrónica');
+-- Insertar en la tabla de Categorías
+INSERT INTO Categorias (NombreCategoria) VALUES ('Cristianas');
+INSERT INTO Categorias (NombreCategoria) VALUES ('Ebenezer');
 
--- Insertar listas de reproducción
-INSERT INTO ListasReproduccion (NombreLista, Descripcion, CategoriaID) VALUES
-  ('Lista1', 'Lista de Pop', 1),
-  ('Lista2', 'Lista de Rock', 2),
-  ('Lista3', 'Lista de Electrónica', 3);
+-- Insertar en la tabla de ListasReproduccion
+INSERT INTO ListasReproduccion (NombreLista, Descripcion, CategoriaID) VALUES ('Lista1-Jubilo', 'Descripción de Lista1', 1);
+INSERT INTO ListasReproduccion (NombreLista, Descripcion, CategoriaID) VALUES ('Lista2-Ensayo', 'Descripción de Lista2', 2);
 
--- Insertar relación entre canciones y listas de reproducción
-INSERT INTO ListaCanciones (ListaID, CancionID, Orden) VALUES
-  (1, 1, 1),
-  (1, 2, 2),
-  (2, 3, 1),
-  (3, 4, 1);
+-- Insertar en la tabla de ListaCanciones
+INSERT INTO ListaCanciones (ListaID, CancionID, Orden) VALUES (1, 1, 1);
+INSERT INTO ListaCanciones (ListaID, CancionID, Orden) VALUES (2, 2, 1);
 
--- Insertar roles
+-- Insertar en la tabla de Roles
 INSERT INTO Roles (NombreRol) VALUES ('Administrador');
 INSERT INTO Roles (NombreRol) VALUES ('Invitado');
-INSERT INTO Roles (NombreRol) VALUES ('Premium');
 
--- Insertar usuarios
-INSERT INTO Usuarios (Nombre, Apellidos, Alias, Pais, Departamento, FechaNacimiento, Instrumento, Password, Correo, RolID) VALUES
-  ('Usuario1', 'Apellido1', 'Alias1', 'Pais1', 'Departamento1', '1990-01-01', 'Guitarra', 'password1', 'usuario1@ejemplo.com', 1),
-  ('Usuario2', 'Apellido2', 'Alias2', 'Pais2', 'Departamento2', '1985-05-15', 'Batería', 'password2', 'usuario2@ejemplo.com', 2),
-  ('Usuario3', 'Apellido3', 'Alias3', 'Pais3', 'Departamento3', '1995-08-20', 'Piano', 'password3', 'usuario3@ejemplo.com', 3);
+-- Insertar en la tabla de Usuarios
+INSERT INTO Usuarios (Nombre, Apellidos, Alias, Pais, Departamento, FechaNacimiento, Instrumento, Password, Correo, RolID) VALUES ('Sergio Ariel', 'Ramirez Castro', 'Sergio1990', 'Guatemala', 'Guatemala', '1990-08-12', 'Piano', '1234', 'sergiounix@gmail.com', 1);
+INSERT INTO Usuarios (Nombre, Apellidos, Alias, Pais, Departamento, FechaNacimiento, Instrumento, Password, Correo, RolID) VALUES ('Madelyn Lorena', 'Méndez Barraza', 'Madelyn1993', 'Guatemala', 'Guatemala', '1993-01-05', 'Canto', '1234', 'madesitalor@gmail.com', 2);
 
--- Insertar membresía de usuario
-INSERT INTO MembresiaUsuario (UsuarioID, FechaInicio, FechaFin) VALUES
-  (1, '2022-01-01', '2023-01-01'),
-  (2, '2022-03-01', '2023-03-01'),
-  (3, '2022-05-01', '2023-05-01');
+-- Insertar en la tabla de MembresiaUsuario
+INSERT INTO MembresiaUsuario (UsuarioID, FechaInicio, FechaFin) VALUES (1, '2023-11-25', '2035-12-31');
+INSERT INTO MembresiaUsuario (UsuarioID, FechaInicio, FechaFin) VALUES (2, '2023-11-25', '2035-12-31');
 
--- Insertar relaciones entre usuarios y canciones/listas favoritas
-INSERT INTO CancionesFavoritas (UsuarioID, CancionID) VALUES (1, 1), (2, 3), (3, 4);
-INSERT INTO ListasReproduccionFavoritas (UsuarioID, ListaID) VALUES (1, 1), (2, 2), (3, 3);
+-- Insertar en la tabla de CancionesFavoritas
+INSERT INTO CancionesFavoritas (UsuarioID, CancionID) VALUES (1, 1);
+INSERT INTO CancionesFavoritas (UsuarioID, CancionID) VALUES (2, 2);
+
+-- Insertar en la tabla de ListasReproduccionFavoritas
+INSERT INTO ListasReproduccionFavoritas (UsuarioID, ListaID) VALUES (1, 1);
+INSERT INTO ListasReproduccionFavoritas (UsuarioID, ListaID) VALUES (2, 2);
+
+-- Insertar en la tabla de ReproduccionesCancion (simulado, ajusta según sea necesario)
+INSERT INTO ReproduccionesCancion (UsuarioID, CancionID, FechaReproduccion) VALUES (1, 1, GETDATE());
+INSERT INTO ReproduccionesCancion (UsuarioID, CancionID, FechaReproduccion) VALUES (2, 2, GETDATE());

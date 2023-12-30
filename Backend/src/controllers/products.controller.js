@@ -11,6 +11,35 @@ export const getProducts = async (req, res) => {
   }
 };
 
+export const getAlbums = async (req, res) => {
+  try {
+    const pool = await getConnection();
+    const result = await pool.request().query(querys.getAlbums);
+    res.json(result.recordset);
+  } catch (error) {
+    res.status(500);
+    res.send(error.message);
+  }
+};
+
+export const getOneAlbum = async (req, res) => {
+  try {
+    const pool = await getConnection();
+
+    const result = await pool
+      .request()
+      .input("id", req.params.id)
+      .query(querys.getOneAlbum);
+    return res.json(result.recordset);  //aca devuelve todo un arreglo de todas las canciones
+  } catch (error) {
+    res.status(500);
+    res.send(error.message);
+  }
+};
+
+
+
+
 export const createNewProduct = async (req, res) => {
   const { name, description } = req.body;
   let { quantity } = req.body;
@@ -47,7 +76,7 @@ export const getProductById = async (req, res) => {
       .request()
       .input("id", req.params.id)
       .query(querys.getProducById);
-    return res.json(result.recordset[0]);
+    return res.json(result.recordset[0]);   //aca devuelve solamente un registro
   } catch (error) {
     res.status(500);
     res.send(error.message);
